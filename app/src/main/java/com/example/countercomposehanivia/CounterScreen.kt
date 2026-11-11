@@ -17,11 +17,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.countercomposehanivia.ui.theme.CounterComposeHaniviaTheme
 
-// Wrapper yang terhubung ke ViewModel
 @Composable
 fun CounterApp(
     modifier: Modifier = Modifier,
-    viewModel: CounterViewModel = viewModel()
+    viewModel: CounterViewModel = viewModel(),
+    onNextClicked: () -> Unit = {}
 ) {
     val counter by viewModel.counter
 
@@ -30,17 +30,18 @@ fun CounterApp(
         onIncrement = { viewModel.increment() },
         onDecrement = { viewModel.decrement() },
         onReset = { viewModel.reset() },
+        onNext = onNextClicked,
         modifier = modifier
     )
 }
 
-// Composbale Stateless (Hanya menampilkan UI)
 @Composable
 fun CounterScreen(
     counter: Int = 0,
     onIncrement: () -> Unit = {},
     onDecrement: () -> Unit = {},
     onReset: () -> Unit = {},
+    onNext: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -67,7 +68,8 @@ fun CounterScreen(
         CounterButtons(
             onIncrement = onIncrement,
             onDecrement = onDecrement,
-            onReset = onReset
+            onReset = onReset,
+            onNext = onNext
         )
     }
 }
@@ -102,7 +104,8 @@ fun CounterDisplay(value: Int, modifier: Modifier = Modifier) {
 fun CounterButtons(
     onDecrement: () -> Unit = {},
     onIncrement: () -> Unit = {},
-    onReset: () -> Unit = {}
+    onReset: () -> Unit = {},
+    onNext: () -> Unit = {}
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -152,6 +155,17 @@ fun CounterButtons(
             )
             Spacer(Modifier.width(ButtonDefaults.IconSpacing))
             Text("RESET")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Tombol Next Tambahan (Challenges)
+        Button(
+            onClick = onNext,
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF9C27B0))
+        ) {
+            Text("NEXT")
         }
     }
 }
